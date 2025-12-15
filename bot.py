@@ -17,6 +17,16 @@ game_running = 0
 last_message = None
 
 
+@bot.event
+async def on_ready():
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.listening,
+            name="Cigipisek made me do this"
+        )
+    )
+
+
 @bot.command()
 # @commands.has_permisions(administrator=True)
 async def sf_start(ctx):
@@ -77,12 +87,12 @@ async def on_message(message):
         return
     
     if message.content.lower() == last_message.lower():
-        rint(f"{message.author} se snazi kopirovat posledni zpravu")
+        print(f"{message.author} se snazi kopirovat posledni zpravu")
         await message.delete()
         return
     
     if len(message.content) <= 1:
-        rint(f"{message.author} se snazi napsat jedno pismeno pouze")
+        print(f"{message.author} se snazi napsat jedno pismeno pouze")
         await message.delete()
         return
         
@@ -99,3 +109,4 @@ async def on_message(message):
     await bot.process_commands(message)
 
 bot.run(TOKEN)
+
