@@ -15,6 +15,8 @@ watched_channel = None
 last_user = None
 game_running = 0
 last_message = None
+last_question = None
+last_message_changed = 0
 
 
 @bot.event
@@ -48,13 +50,38 @@ async def sf_start(ctx):
     watched_channel = ctx.channel
     game_running = 1
 
-    
+
+@bot.command()
+async def akutalni_slovo(ctx):
+    global watched_channel
+    global game_running
+    global last_message
+    global last_question
+    global last_message_changed
+
+    if ctx.message.author == last_question and last_message_changed == 0:
+        return
+
+    if last_message_changed == 0:
+        return
+
+    if game_running != 1:
+        await ctx.send("Hra nebezi")
+        return
+
+    await ctx.send(f"{ctx.message.author.name} se zeptal na aktualni slovo")
+    await ctx.send(f"Posledni slovo je: {last_message}")
+    last_question = ctx.message.author
+    last_message_changed = 0
+
+
 @bot.event
 async def on_message(message):
     global watched_channel
     global last_message
     global last_user
     global game_running
+    global last_message_changed
 
     if message.author.bot:
         return
@@ -63,50 +90,54 @@ async def on_message(message):
         await bot.process_commands(message)
         return
 
-
     if " " in message.content:
         print(f"{message.author} napsal dve slova, ne jedno - {message.content}")
         await message.delete()
         return
-    
+
     word = message.content.strip()
 
-    if not word.isalpha():
+    if message.content == "$aktualni_slovo":
+        print()
+    elif not word.isalpha():
         print(f"{message.author} se snazi napsat specialni znaky - {message.content}")
         await message.delete()
         return
+
 
     if last_message is None:
         last_message = message.content
         last_user = message.author
         return
-    
+
     if message.author == last_user:
         print(f"{message.author} se snazi hrat sam")
         await message.delete()
         return
-    
+
     if message.content.lower() == last_message.lower():
         print(f"{message.author} se snazi kopirovat posledni zpravu")
         await message.delete()
         return
-    
+
     if len(message.content) <= 1:
         print(f"{message.author} se snazi napsat jedno pismeno pouze")
         await message.delete()
         return
-        
+
     if message.content[0].lower() != last_message[-1].lower():
         print(f"{message.author} nenapsal spravne slovo - {message.content}")
         await message.delete()
         return
+    elif message.content == "$aktualni_slovo":
+        print(f"nekdo pise prikaz")
 
     print(f"{message.channel} Posledni zprava: {last_message} | Nova zprava: {message.content} | Autor: {message.author}")
     last_message = word.lower()
     last_user = message.author
-
+    last_message_changed = 1
 
     await bot.process_commands(message)
 
-bot.run(TOKEN)
 
+bot.run(TOKEN)
