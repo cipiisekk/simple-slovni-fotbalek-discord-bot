@@ -35,6 +35,7 @@ async def sf_start(ctx):
     global watched_channel
     global game_running
     global last_message
+    global last_message_changed
 
     if game_running == 1:
         await ctx.send("Jiz kontroluji na jinem kanale")
@@ -46,7 +47,7 @@ async def sf_start(ctx):
 
     await ctx.send("Hra zacina na slove abeceda")
     last_message = "abeceda"
-
+    last_message_changed = 1
     watched_channel = ctx.channel
     game_running = 1
 
@@ -59,8 +60,10 @@ async def akutalni_slovo(ctx):
     global last_question
     global last_message_changed
 
-    if ctx.channel == watched_channel:
-		await message.delete()
+    if game_running != 1:
+        await ctx.send("Hra nebezi")
+        return
+    
     if last_message_changed == 0:
         return
 
