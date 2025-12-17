@@ -84,9 +84,7 @@ async def napoveda(ctx):
         await ctx.message.delete()
         return
 
-    await ctx.send("$aktualni slovo - zobrazeni aktualniho slova"
-          "$sf_start - zapnuti hry na danem kanale"
-                   "$napoveda - zobrazeni tohohle menu")
+    await ctx.send("$aktualni slovo - zobrazeni aktualniho slova \n$sf_start - zapnuti hry na danem kanale \n$napoveda - zobrazeni tohohle menu")
 
 @bot.command()
 async def sf_stop(ctx):
