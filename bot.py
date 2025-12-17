@@ -194,7 +194,7 @@ async def on_message(message):
         return
 
     print(
-        f"{message.channel} Posledni zprava: {last_message} | Nova zprava: {message.content} | Autor: {message.author}")
+        f"{message.channel} **Posledni zprava**: {last_message} | **Nova zprava**: {message.content} | **Autor**: {message.author}")
     last_message = word
     last_user = message.author
     last_message_changed = 1
