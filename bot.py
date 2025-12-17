@@ -97,7 +97,7 @@ async def sf_stop(ctx):
     global last_question
     global last_message_changed
 
-    if game_running == 1:
+    if game_running == 0:
         await ctx.send("Hra je jiz vypla")
         return
 
