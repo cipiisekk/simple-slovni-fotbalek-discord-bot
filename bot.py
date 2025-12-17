@@ -1,3 +1,4 @@
+
 import os
 import discord
 from discord.ext import commands
@@ -38,14 +39,14 @@ async def sf_start(ctx):
     global last_message_changed
 
     if game_running == 1:
-        await ctx.send("Jiz kontroluji na jinem kanale")
+        await ctx.reply("Chyba! Hra jiz bezi na jinem kanale")
         return
 
     if watched_channel == ctx.channel:
-        await ctx.send("Na tomto kanale jiz kontroluji..")
+        await ctx.reply("Chyba! Na tomto kanale jiz kontroluji..")
         return
 
-    await ctx.send("Hra zacina na slove abeceda")
+    await ctx.reply("Hra zacina na slove **Abeceda** !")
     last_message = "abeceda"
     last_message_changed = 1
     watched_channel = ctx.channel
@@ -61,14 +62,22 @@ async def akutalni_slovo(ctx):
     global last_message_changed
 
     if game_running != 1:
+<<<<<<< HEAD
         await ctx.send("Hra nebezi")
+=======
+        await ctx.reply("**Chyba!** Hra jeste nebezi!")
+>>>>>>> 73fd5c6 (d)
         return
 
     if last_message_changed == 0:
         return
 
     if game_running != 1:
+<<<<<<< HEAD
         await ctx.send("Hra nebezi")
+=======
+        await ctx.reply("**Chyba!** Hra jeste nebezi!")
+>>>>>>> 73fd5c6 (d)
         return
 
     # await ctx.send(f"{ctx.message.author.name} se zeptal na aktualni slovo")
@@ -84,7 +93,11 @@ async def napoveda(ctx):
         await ctx.message.delete()
         return
 
+<<<<<<< HEAD
     await ctx.send("$aktualni slovo - zobrazeni aktualniho slova \n$sf_start - zapnuti hry na danem kanale \n$napoveda - zobrazeni tohohle menu")
+=======
+    await ctx.send("$aktualni_slovo - zobrazeni aktualniho slova \n$sf_start - zapnuti hry na danem kanale \n$sf_stop - vypnuti hry\n$napoveda - zobrazeni tohohle menu")
+>>>>>>> 73fd5c6 (d)
 
 @bot.command()
 async def sf_stop(ctx):
@@ -96,7 +109,11 @@ async def sf_stop(ctx):
     global last_message_changed
 
     if game_running == 0:
+<<<<<<< HEAD
         await ctx.send("Hra je jiz vypla")
+=======
+        await ctx.reply("**Chyba!** Hra jeste nebezi!")
+>>>>>>> 73fd5c6 (d)
         return
 
     watched_channel = None
@@ -106,7 +123,11 @@ async def sf_stop(ctx):
     last_question = None
     last_message_changed = 0
 
+<<<<<<< HEAD
     await ctx.send("Hra je aktualne vypla")
+=======
+    await ctx.reply("Hru jsem aktualne vypnul", mention_author=False)
+>>>>>>> 73fd5c6 (d)
 
 
 
@@ -121,6 +142,11 @@ async def on_message(message):
     if message.author.bot:
         return
 
+<<<<<<< HEAD
+=======
+    message.content = message.content.lower()
+    
+>>>>>>> 73fd5c6 (d)
     ctx = await bot.get_context(message)
     if ctx.valid == True:
         await bot.process_commands(message)
@@ -148,7 +174,7 @@ async def on_message(message):
         return
 
     if message.author == last_user:
-        print(f"{message.author} se snazi hrat sam")
+        print(f"{message.author} se snazi hrat sam- {message.content}")
         await message.delete()
         return
 
@@ -175,5 +201,10 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+<<<<<<< HEAD
+=======
+
+bot.run(TOKEN)
+>>>>>>> 73fd5c6 (d)
 
 bot.run(TOKEN)
