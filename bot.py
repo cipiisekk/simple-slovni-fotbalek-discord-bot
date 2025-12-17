@@ -17,7 +17,6 @@ game_running = 0
 last_message = None
 last_question = None
 last_message_changed = 0
-game_stopped = 1
 
 
 @bot.event
@@ -37,7 +36,6 @@ async def sf_start(ctx):
     global game_running
     global last_message
     global last_message_changed
-    global game_stopped
 
     if game_running == 1:
         await ctx.send("Jiz kontroluji na jinem kanale")
@@ -52,7 +50,6 @@ async def sf_start(ctx):
     last_message_changed = 1
     watched_channel = ctx.channel
     game_running = 1
-    game_stopped = 0
 
 
 @bot.command()
@@ -99,9 +96,8 @@ async def sf_stop(ctx):
     global last_user
     global last_question
     global last_message_changed
-    global game_stopped
 
-    if game_stopped == 1:
+    if game_running == 1:
         await ctx.send("Hra je jiz vypla")
         return
 
@@ -111,7 +107,6 @@ async def sf_stop(ctx):
     last_user = None
     last_question = None
     last_message_changed = 0
-    game_stopped = 1
 
     await ctx.send("Hra je aktualne vypla")
 
