@@ -121,7 +121,6 @@ async def on_message(message):
     global last_message_changed
 
     if message.author.bot:
-        await message.delete()
         return
 
     ctx = await bot.get_context(message)
