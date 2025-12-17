@@ -81,7 +81,7 @@ async def napoveda(ctx):
     global watched_channel
 
     if watched_channel == ctx.channel:
-        await message.delete()
+        await ctx.message.delete()
         return
 
     await ctx.send("$aktualni slovo - zobrazeni aktualniho slova"
