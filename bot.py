@@ -17,6 +17,7 @@ game_running = 0
 last_message = None
 last_question = None
 last_message_changed = 0
+game_stopped = 1
 
 
 @bot.event
@@ -36,6 +37,7 @@ async def sf_start(ctx):
     global game_running
     global last_message
     global last_message_changed
+    global game_stopped = 0
 
     if game_running == 1:
         await ctx.send("Jiz kontroluji na jinem kanale")
@@ -63,7 +65,7 @@ async def akutalni_slovo(ctx):
     if game_running != 1:
         await ctx.send("Hra nebezi")
         return
-    
+
     if last_message_changed == 0:
         return
 
@@ -76,6 +78,43 @@ async def akutalni_slovo(ctx):
     last_question = ctx.message.author
     last_message_changed = 0
 
+@bot.command()
+async def napoveda(ctx):
+    global watched_channel
+
+    if watched_channel == ctx.channel:
+        await message.delete()
+        return
+
+    await ctx.send("$aktualni slovo - zobrazeni aktualniho slova"
+          "$sf_start - zapnuti hry na danem kanale"
+                   "$napoveda - zobrazeni tohohle menu")
+
+@bot.command()
+async def sf_stop(ctx):
+    global watched_channel
+    global game_running
+    global last_message
+    global last_user
+    global last_question
+    global last_message_changed
+    global game_stopped
+
+    if game_stopped == 1:
+        await ctx.send("Hra je jiz vypla")
+        return
+
+    watched_channel = None
+    game_running = 0
+    last_message = None
+    last_user = None
+    last_question = None
+    last_message_changed = 0
+    game_stopped = 1
+
+    await ctx.send("Hra je aktualne vypla")
+
+
 
 @bot.event
 async def on_message(message):
@@ -86,13 +125,14 @@ async def on_message(message):
     global last_message_changed
 
     if message.author.bot:
+        await message.delete()
         return
 
     ctx = await bot.get_context(message)
     if ctx.valid == True:
         await bot.process_commands(message)
         return
-    
+
     if message.channel != watched_channel or game_running == 0:
         await bot.process_commands(message)
         return
@@ -134,7 +174,8 @@ async def on_message(message):
         await message.delete()
         return
 
-    print(f"{message.channel} Posledni zprava: {last_message} | Nova zprava: {message.content} | Autor: {message.author}")
+    print(
+        f"{message.channel} Posledni zprava: {last_message} | Nova zprava: {message.content} | Autor: {message.author}")
     last_message = word
     last_user = message.author
     last_message_changed = 1
