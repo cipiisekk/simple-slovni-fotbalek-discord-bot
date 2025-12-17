@@ -37,7 +37,7 @@ async def sf_start(ctx):
     global game_running
     global last_message
     global last_message_changed
-    global game_stopped = 0
+    global game_stopped
 
     if game_running == 1:
         await ctx.send("Jiz kontroluji na jinem kanale")
@@ -52,6 +52,7 @@ async def sf_start(ctx):
     last_message_changed = 1
     watched_channel = ctx.channel
     game_running = 1
+    game_stopped = 0
 
 
 @bot.command()
